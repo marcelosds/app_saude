@@ -9,27 +9,28 @@
             <ul class="navbar-nav w-100 align-items-center">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Área do paciente
+                        Área do Paciente
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
-                        <li><a class="dropdown-item" href="{% url 'minhas_consultas' %}">Minhas consultas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'minhas_consultas' %}">Minhas Consultas</a></li>
                     </ul>
                 </li>
 
                 {% if is_medico %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Área do médico
+                        Área do Médico
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{% url 'abrir_horario' %}">Abrir horários</a></li>
-                        <li><a class="dropdown-item" href="{% url 'consultas_medico' %}">Suas consultas</a></li>
+                        <li><a class="dropdown-item" href="{% url 'abrir_horario' %}">Abrir Horários</a></li>
+                        <li><a class="dropdown-item" href="{% url 'consultas_medico' %}">Consultas Agendadas</a></li>
                     </ul>
                 </li>
+                
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'cadastro_medico' %}">Sou médico</a>
+                    <a class="nav-link" href="{% url 'cadastro_medico' %}">Sou Médico</a>
                 </li>
                 {% endif %}
             </ul> 

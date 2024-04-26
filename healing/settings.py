@@ -141,3 +141,5 @@ MESSAGE_TAGS = {
     constants.INFO: 'alert-info',
     constants.WARNING: 'alert-warning',
 }
+
+DATE_INPUT_FORMATS = ['%d/%m/%Y']

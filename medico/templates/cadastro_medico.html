@@ -3,8 +3,25 @@
 
 {% block 'head' %}
 
-    <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
-    <link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}">
+   <link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+   <link rel="stylesheet" href="{% static 'medicos/css/cadastro_medico.css' %}">
+
+   <script>
+      function consultarCEP() {
+         var cep = document.getElementById("cep").value;
+         var url = "https://viacep.com.br/ws/" + cep + "/json/";
+       
+         fetch(url)
+           .then(response => response.json())
+           .then(data => {
+             document.getElementById("rua").value = data.logradouro;
+             document.getElementById("bairro").value = data.bairro;
+             document.getElementById("cidade").value = data.localidade;
+             document.getElementById("estado").value = data.uf;
+           })
+           .catch(error => console.log(error));
+       }
+   </script>    
 
 {% endblock 'head' %}
 
@@ -19,7 +36,7 @@
    <div class="row">
       <div class="col-md-8">
          <p class="p-bold">Olá, <span class="color-dark">{{request.user.first_name}} {{request.user.last_name}}</span></p>
-         <p class="p-bold">Vamos realizar seu cadastro médico legal.</p>
+         <p class="p-bold">Vamos realizar seu cadastro de médico, informe todos os dados.</p>
          {% if messages %}
             <br>
             {% for message in messages %}
@@ -48,21 +65,32 @@
                </div>
                <div class="col-md">
                   <label for="">CEP</label>
-                  <input type="text" name="cep" id="" class="form-control shadow-main-color">
+                  <input type="text" name="cep" id="cep" onblur="consultarCEP()" class="form-control shadow-main-color">
                </div>
             </div>
             <br>
             <label for="">Rua</label>
-            <input type="text" name="rua" id="" class="form-control shadow-main-color" placeholder="Endereço ...">
+            <input type="text" name="rua" id="rua" class="form-control shadow-main-color" placeholder="Endereço ...">
             <br>
             <div class="row">
                <div class="col-md">
                   <label for="">Bairro:</label>
-                  <input type="text" class="form-control shadow-main-color" name="bairro" placeholder="Bairro ...">
+                  <input type="text" id='bairro' class="form-control shadow-main-color" name="bairro" placeholder="Bairro ...">
                </div>
                <div class="col-md">
                   <label for="">Número:</label>
                   <input type="number" name="numero" id="" class="form-control shadow-main-color">
+               </div>
+            </div>
+            <br>
+            <div class="row">
+               <div class="col-md">
+                  <label for="">Cidade:</label>
+                  <input type="text" id='cidade' class="form-control shadow-main-color" name="Cidade" placeholder="Cidade ...">
+               </div>
+               <div class="col-md">
+                  <label for="">Estado:</label>
+                  <input type="text" id='estado' class="form-control shadow-main-color" name="estado" placeholder="Estado ...">
                </div>
             </div>
             <br>
@@ -72,7 +100,7 @@
             <label for="">Foto de perfil:</label>
             <input type="file" name="foto" id="" class="form-control shadow-main-color">
             <br>
-            <label for="">Especialidade médica</label>
+            <label for="">Especialidade Médica</label>
             <select name="especialidade" class="form-select" id="">
                <option value="">
                 {% for especialidade in especialidades %}
@@ -84,8 +112,8 @@
             <label for="">Descrição:</label>
             <textarea name="descricao" class="form-control shadow-main-color"></textarea>
             <br>
-            <label for="">Valor consulta:</label>
-            <input type="number" name="valor_consulta" class="form-control shadow-main-color">
+            <label for="">Valor Consulta:</label>
+            <input type="floatformat" name="valor_consulta" class="form-control shadow-main-color">
             <br>
             <input type="submit" value="Cadastre-se" class="btn btn-success btn-dark-color">
          </form>

@@ -19,6 +19,8 @@ class DadosMedico(models.Model):
     cep = models.CharField(max_length=15)
     rua = models.CharField(max_length=100)
     bairro = models.CharField(max_length=100)
+    cidade = models.CharField(max_length=100)
+    estado = models.CharField(max_length=100)
     numero = models.IntegerField()
     rg = models.ImageField(upload_to="rgs")
     cedula_identidade_medica = models.ImageField(upload_to='cim')

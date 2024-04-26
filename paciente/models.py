@@ -12,9 +12,10 @@ class Consulta(models.Model):
     data_aberta = models.ForeignKey(DatasAbertas, on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=1, choices=status_choices, default='A')
     link = models.URLField(null=True, blank=True)
+
    
     def __str__(self):
-        return self.paciente.username
+        return self.paciente.first_name +' '+ self.paciente.last_name
   
     
 

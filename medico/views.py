@@ -1,55 +1,73 @@
 from datetime import datetime, timedelta
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-
 from paciente.models import Consulta, Documento
 from .models import DatasAbertas, Especialidades, DadosMedico, is_medico
 from django.contrib import messages
 from django.contrib.messages import constants
+#import requests
 
     
 def cadastro_medico(request):
     
+      
     if is_medico(request.user):
         messages.add_message(request, constants.WARNING, 'Você já está cadastrado como médico.')
         return redirect('/medicos/abrir_horario')
     
+      
     if request.method == "GET":
         especialidades = Especialidades.objects.all()
         return render(request, 'cadastro_medico.html', {'especialidades': especialidades, 'is_medico': is_medico(request.user)})
     elif request.method == "POST":
-        crm = request.POST.get('crm')
-        nome = request.POST.get('nome')
-        cep = request.POST.get('cep')
-        rua = request.POST.get('rua')
-        bairro = request.POST.get('bairro')
-        numero = request.POST.get('numero')
-        cim = request.FILES.get('cim')
-        rg = request.FILES.get('rg')
-        foto = request.FILES.get('foto')
-        especialidade = request.POST.get('especialidade')
-        descricao = request.POST.get('descricao')
-        valor_consulta = request.POST.get('valor_consulta')
-
-
-        dados_medico = DadosMedico(
-            crm=crm,
-            nome=nome,
-            cep=cep,
-            rua=rua,
-            bairro=bairro,
-            numero=numero,
-            rg=rg,
-            cedula_identidade_medica=cim,
-            foto=foto,
-            user=request.user,
-            descricao=descricao,
-            especialidade_id=especialidade,
-            valor_consulta=valor_consulta
-        )
-        dados_medico.save()
-        messages.add_message(request, constants.SUCCESS, 'Cadastro médico realizado com sucesso.')
-        return redirect('/medicos/abrir_horario')
+        
+        if request.POST.get('crm')=='':
+            messages.add_message(request, constants.WARNING, 'Nenhum campo pode ficar vazio!')
+            return redirect('/medicos/cadastro_medico') 
+        elif request.POST.get('crm') != '':   
+            crm = request.POST.get('crm')
+            nome = request.POST.get('nome')
+            cep = request.POST.get('cep')
+            
+            # Pegar CEP na API dos Correios
+            '''link = f'https://viacep.com.br/ws/{cep}/json/'
+            pegar_cep =  requests.get(link)
+            dic_requisicao = pegar_cep.json()
+            print(dic_requisicao)'''
+            
+            rua = request.POST.get('rua')
+            bairro = request.POST.get('bairro')
+            cidade = request.POST.get('cidade')
+            estado = request.POST.get('etado')
+            numero = request.POST.get('numero')
+            cim = request.FILES.get('cim')
+            rg = request.FILES.get('rg')
+            foto = request.FILES.get('foto')
+            especialidade = request.POST.get('especialidade')
+            descricao = request.POST.get('descricao')
+            valor_consulta = request.POST.get('valor_consulta')
+           
+            
+            dados_medico = DadosMedico(
+                crm=crm,
+                nome=nome,
+                cep=cep,
+                rua=rua,
+                bairro=bairro,
+                cidade=cidade,
+                estado=estado,
+                numero=numero,
+                rg=rg,
+                cedula_identidade_medica=cim,
+                foto=foto,
+                user=request.user,
+                descricao=descricao,
+                especialidade_id=especialidade,
+                valor_consulta=valor_consulta
+            )
+            dados_medico.save()
+            messages.add_message(request, constants.SUCCESS, 'Cadastro médico realizado com sucesso.')
+            return redirect('/medicos/abrir_horario')
 
 
 def abrir_horario(request):
@@ -64,19 +82,23 @@ def abrir_horario(request):
     elif request.method == "POST":
         data = request.POST.get('data')
         
-        data_formatada = datetime.strptime(data, "%Y-%m-%dT%H:%M")
-        
-        if data_formatada <= datetime.now():
-            messages.add_message(request, constants.WARNING, 'A data deve ser maior ou igual a data atual.')
+        if data =='':
+            messages.add_message(request, constants.ERROR, 'A data deve ser informada!')
             return redirect('/medicos/abrir_horario')
-        horario_abrir = DatasAbertas(
-            data=data,
-            user=request.user
-        )
-        horario_abrir.save()
-        
-        messages.add_message(request, constants.SUCCESS, 'Horário cadastrado com sucesso.')
-        return redirect('/medicos/abrir_horario')
+        elif data !='':
+            data_formatada = datetime.strptime(data, "%Y-%m-%dT%H:%M")
+            
+            if data_formatada <= datetime.now():
+                messages.add_message(request, constants.WARNING, 'A data deve ser maior ou igual a data atual.')
+                return redirect('/medicos/abrir_horario')
+            horario_abrir = DatasAbertas(
+                data=data,
+                user=request.user
+            )
+            horario_abrir.save()
+            
+            messages.add_message(request, constants.SUCCESS, 'Horário cadastrado com sucesso.')
+            return redirect('/medicos/abrir_horario')
     
 
 def consultas_medico(request):
@@ -100,7 +122,7 @@ def consulta_area_medico(request, id_consulta):
     if request.method == "GET":
         consulta = Consulta.objects.get(id=id_consulta)
         documentos = Documento.objects.filter(consulta=consulta)
-        return render(request, 'consulta_area_medico.html', {'consulta': consulta, 'documentos': documentos,'is_medico': is_medico(request.user)})
+        return render(request, 'consulta_area_medico.html', {'consulta': consulta, 'documentos': documentos, 'is_medico': is_medico(request.user)})
     elif request.method == "POST":
         # Inicializa a consulta + link da chamada
         consulta = Consulta.objects.get(id=id_consulta)
