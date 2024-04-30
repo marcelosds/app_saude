@@ -7,15 +7,12 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav w-100 align-items-center">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Área do Paciente
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="{% url 'home' %}">Home</a></li>
-                        <li><a class="dropdown-item" href="{% url 'minhas_consultas' %}">Minhas Consultas</a></li>
-                    </ul>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'home' %}">Pagina Inicial</a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'minhas_consultas' %}">Minhas Consultas</a>
+                </li>    
 
                 {% if is_medico %}
                 <li class="nav-item dropdown">

@@ -1,4 +1,6 @@
 from django.urls import path
+
+from paciente.views import enviar_email
 from . import views
 
 urlpatterns = [
@@ -7,5 +9,7 @@ urlpatterns = [
     path('consultas_medico/', views.consultas_medico, name="consultas_medico"),
     path('consulta_area_medico/<int:id_consulta>/', views.consulta_area_medico, name="consulta_area_medico"),
     path('finalizar_consulta/<int:id_consulta>/', views.finalizar_consulta, name="finalizar_consulta"),
-    path('add_documento/<int:id_consulta>/', views.add_documento, name="add_documento")
+    path('add_documento/<int:id_consulta>/', views.add_documento, name="add_documento"),
+    path('enviar_email/', enviar_email, name='enviar_email')
+
 ]

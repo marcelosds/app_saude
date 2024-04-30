@@ -46,9 +46,9 @@
                   </div>
                </div>
                <p><i class="bi bi-map icon-main"></i>&nbsp&nbsp{{medico.rua}}, {{medico.numero}}.</p>
-               <p><i class="bi bi-calendar2-week icon-main"></i>&nbsp&nbspProxima data: {{medico.proxima_data}}</p>
+               <!-- <p><i class="bi bi-calendar2-week icon-main"></i>&nbsp&nbspProxima data: {{medico.proxima_data}}</p> -->
                
-               <a href="{% url 'escolher_horario' medico.id %}" class="btn btn-success btn-dark-color">Agendar</a>
+               <a href="{% url 'escolher_horario' medico.id %}" class="btn btn-success btn-dark-color">Escolher data</a>
             </div>
             <br>
             {% endfor %}
@@ -57,7 +57,7 @@
       <div class="col-md-4">
          <p style="font-size: 25px" class="p-bold">Lembretes</p>
          <p class="bg-main-lembrete">
-            <span class="p-bold"><i class="bi bi-exclamation-triangle-fill icon-differential"></i>&nbsp&nbsp Consulta com Dr(a) XXXXXXXXXXXXXX em 7 dias.</span>
+         <span class="p-bold"><i class="bi bi-exclamation-triangle-fill icon-differential"></i>&nbsp&nbsp Consulta com Dr(a) {{medico.nome}} em X dias.</span>
          </p>
       </div>
    </div>

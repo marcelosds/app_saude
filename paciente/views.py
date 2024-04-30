@@ -12,14 +12,17 @@ from django.contrib.messages import constants
 
 def enviar_email(request, id_data_aberta):
     # Enviar e-mail com informações dos valores
-
+    user_email = request.user.email
+    
     paciente = Consulta(paciente=request.user)
     data_consulta = DatasAbertas.objects.get(id=id_data_aberta)
-
-    sender_email = "marcelosds@gmail.com"
-    sender_password = "ylpjujwzwsoeczjd"
-    receiver_email = "marcelosds@gmail.com"
-    subject = "Agendamento de Consulta Médica"
+    
+  
+    sender_email = 'mstitecnologiadopresente@gmail.com'
+    sender_password = 'mbbkrnnpmedxkvmq'
+    receiver_email = user_email
+    email_medico = 'marcelotkd2010@hotmail.com'
+    subject = 'Agendamento de Consulta Médica'
     message = f'''
        Prezado(a)
 
@@ -35,6 +38,7 @@ def enviar_email(request, id_data_aberta):
     msg = MIMEMultipart()
     msg['From'] = sender_email
     msg['To'] = receiver_email
+    msg['CC'] = email_medico
     msg['Subject'] = subject
     msg.attach(MIMEText(message, 'plain'))
 
@@ -42,7 +46,7 @@ def enviar_email(request, id_data_aberta):
         with smtplib.SMTP('smtp.gmail.com', 587) as server:
             server.starttls()
             server.login(sender_email, sender_password)
-            server.sendmail(sender_email, receiver_email, msg.as_string())
+            server.sendmail(sender_email, [receiver_email, email_medico], msg.as_string())
 
     except smtplib.SMTPException:
         messages.add_message(request, constants.ERROR, "Ocorreu um erro ao enviar o e-mail.")
@@ -53,6 +57,7 @@ def home(request):
         medico_filtrar = request.GET.get('medico')
         especialidades_filtrar = request.GET.getlist('especialidades')
         medicos = DadosMedico.objects.all()
+        
 
         if medico_filtrar:
             medicos = medicos.filter(nome__icontains=medico_filtrar)
@@ -71,45 +76,9 @@ def escolher_horario(request, id_dados_medicos):
         datas_abertas = DatasAbertas.objects.filter(user=medico.user).filter(data__gte=datetime.now()).filter(
             agendado=False)
         
-        print(datas_abertas)
-  
-        today = datetime.now()
-        
-        print(today)
               
-        meses = {
-            1: "Janeiro",
-            2: "Fevereiro",
-            3: "Março",
-            4: "Abril",
-            5: "Maio",
-            6: "Junho",
-            7: "Julho",
-            8: "Agosto",
-            9: "Setembro",
-            10: "Outubro",
-            11: "Novembro",
-            12: "Dezembro"
-        }
-        
-        '''dias_semana = {
-            0: "Domingo",
-            1: "Segunda-feira",
-            2: "Terça-feira",
-            3: "Quarta-feira",
-            4: "Quinta-feira",
-            5: "Sexta-feira",
-            6: "Sábado"
-        }'''
-
-        nome_mes = meses[today.month]
-        #nome_dia_semana = dias_semana[today.weekday]
-
-        print(nome_mes)
-        
         return render(request, 'escolher_horario.html',
-                    {'medico': medico, 'datas_abertas': datas_abertas, 'nome_mes': nome_mes, 
-                        'is_medico': is_medico(request.user)})
+                    {'medico': medico, 'datas_abertas': datas_abertas, 'is_medico': is_medico(request.user)})
 
 
 def agendar_horario(request, id_data_aberta):
@@ -147,3 +116,4 @@ def consulta(request, id_consulta):
         return render(request, 'consulta.html',
                       {'consulta': consulta, 'documentos': documentos, 'dado_medico': dado_medico,
                        'is_medico': is_medico(request.user)})
+

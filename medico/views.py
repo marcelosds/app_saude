@@ -21,10 +21,10 @@ def cadastro_medico(request):
         return render(request, 'cadastro_medico.html', {'especialidades': especialidades, 'is_medico': is_medico(request.user)})
     elif request.method == "POST":
         
-        if request.POST.get('crm')=='':
+        if request.POST.get('crm')=='' or request.POST.get('nome')=='' or request.POST.get('cep')=='' or request.POST.get('rua')=='' or request.POST.get('bairro')=='' or request.POST.get('cidade')=='' or request.POST.get('estado')=='' or request.POST.get('numero')=='' or request.POST.get('cim')=='' or request.POST.get('rg')=='' or request.POST.get('foto')=='' or request.POST.get('especialidade')=='' or request.POST.get('descricao')=='' or request.POST.get('valor_consulta')=='':
             messages.add_message(request, constants.WARNING, 'Nenhum campo pode ficar vazio!')
             return redirect('/medicos/cadastro_medico') 
-        elif request.POST.get('crm') != '':   
+        else:   
             crm = request.POST.get('crm')
             nome = request.POST.get('nome')
             cep = request.POST.get('cep')
@@ -38,7 +38,7 @@ def cadastro_medico(request):
             rua = request.POST.get('rua')
             bairro = request.POST.get('bairro')
             cidade = request.POST.get('cidade')
-            estado = request.POST.get('etado')
+            estado = request.POST.get('estado')
             numero = request.POST.get('numero')
             cim = request.FILES.get('cim')
             rg = request.FILES.get('rg')

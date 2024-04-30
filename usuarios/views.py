@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib import auth
 from django.contrib.auth.models import User
 
+
+
 # Crie suas views aqui.
 def cadastro(request): 
     if  request.method == "GET": 
@@ -59,4 +61,5 @@ def login_view(request):
     
 def sair(request):
     auth.logout(request)
-    return redirect('/usuarios/login')    
+    return redirect('/usuarios/login') 
+
