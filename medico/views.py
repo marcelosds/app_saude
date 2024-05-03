@@ -5,7 +5,6 @@ from paciente.models import Consulta, Documento
 from .models import DatasAbertas, Especialidades, DadosMedico, is_medico
 from django.contrib import messages
 from django.contrib.messages import constants
-#import requests
 
     
 def cadastro_medico(request):
@@ -40,6 +39,7 @@ def cadastro_medico(request):
             cidade = request.POST.get('cidade')
             estado = request.POST.get('estado')
             numero = request.POST.get('numero')
+            email_medico = request.user.email
             cim = request.FILES.get('cim')
             rg = request.FILES.get('rg')
             foto = request.FILES.get('foto')
@@ -57,6 +57,7 @@ def cadastro_medico(request):
                 cidade=cidade,
                 estado=estado,
                 numero=numero,
+                email_medico=email_medico,
                 rg=rg,
                 cedula_identidade_medica=cim,
                 foto=foto,

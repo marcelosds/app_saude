@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.utils import timezone
+
 
 def is_medico(user):
     return DadosMedico.objects.filter(user=user).exists()
@@ -21,31 +23,32 @@ class DadosMedico(models.Model):
     bairro = models.CharField(max_length=100)
     cidade = models.CharField(max_length=100)
     estado = models.CharField(max_length=100)
+    email_medico = models.CharField(max_length=100)
     numero = models.IntegerField()
     rg = models.ImageField(upload_to="rgs")
     cedula_identidade_medica = models.ImageField(upload_to='cim')
     foto = models.ImageField(upload_to="fotos_perfil")
     descricao = models.TextField(null=True, blank=True)
-    valor_consulta = models.FloatField(default=100)
+    valor_consulta = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     especialidade = models.ForeignKey(Especialidades, on_delete=models.DO_NOTHING, null=True, blank=True)
     
     def __str__(self):
         return self.user.username
-    
-    @property
-    def proxima_data(self):
-        proxima_data = DatasAbertas.objects.filter(user=self.user).filter(data__gt=datetime.now()).filter(agendado=False).order_by('data').first()
-        return proxima_data
+
+    def __str__(self):
+        return self.valor_consulta
+        
+        '''proxima_data = DatasAbertas.objects.filter(user=self.user).filter(data__gt=datetime.now()).filter(agendado=False).order_by('data').first()
+        return proxima_data'''
     
     
 class DatasAbertas(models.Model):
-    data = models.DateTimeField()
+    data = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     agendado = models.BooleanField(default=False)
-    
+
     def __str__(self):
-        return str(self.data) 
-    
+        return self.data.strftime('%d-%m-%Y - %H:%M')
     
    
