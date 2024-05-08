@@ -6,3 +6,4 @@
 # Na data da consulta o médico irá gerar um link em plataformas de reunições online, e registrará nos dados
 # da consulta, então ao dar início a consulta o paciente poderá acessar o link e ambos estarão conectados.
 
+# app_saude
