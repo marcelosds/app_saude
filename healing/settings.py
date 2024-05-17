@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'healing.middlewares.HandleTypeErrorMiddleware',  # Substitua 'myapp' pelo nome da sua aplicação
 ]
 
 ROOT_URLCONF = 'healing.urls'
@@ -148,3 +149,6 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mstitecnologiadopresente@gmail.com'
 EMAIL_HOST_PASSWORD = 'mbbkrnnpmedxkvmq'
+
+
+   

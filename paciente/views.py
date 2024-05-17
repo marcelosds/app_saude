@@ -10,18 +10,18 @@ from django.contrib import messages
 from django.contrib.messages import constants
 
 
-def home(request):
+def home(request): 
     if request.method == "GET":
         medico_filtrar = request.GET.get('medico')
         especialidades_filtrar = request.GET.getlist('especialidades')
         medicos = DadosMedico.objects.all()
         
-
+        
         if medico_filtrar:
             medicos = medicos.filter(nome__icontains=medico_filtrar)
         if especialidades_filtrar:
             medicos = medicos.filter(especialidade_id__in=especialidades_filtrar)
-
+       
         especialidades = Especialidades.objects.all()
         return render(request, 'home.html',
                       {'medicos': medicos, 'especialidades': especialidades, 'is_medico': is_medico(request.user)})
@@ -84,7 +84,8 @@ def enviar_email(request, id_data_aberta):
         
         
     except smtplib.SMTPException:
-        messages.add_message(request, constants.ERROR, "Ocorreu um erro ao enviar o e-mail.")        
+        messages.add_message(request, constants.ERROR, "Ocorreu um erro ao enviar o e-mail.")   
+        
         
          
 
@@ -119,6 +120,7 @@ def minhas_consultas(request):
     if request.method == "GET":
         #TODO: desenvolver filtros
         minhas_consultas = Consulta.objects.filter(paciente=request.user).filter(data_aberta__data__gte=datetime.now())
+ 
         
         return render(request, 'minhas_consultas.html',
                       {'minhas_consultas': minhas_consultas, 'is_medico': is_medico(request.user)})
@@ -134,4 +136,19 @@ def consulta(request, id_consulta):
                       {'consulta': consulta, 'documentos': documentos, 'dado_medico': dado_medico,
                        'is_medico': is_medico(request.user)})
         
-     
+        
+def avaliacao(request):
+    
+    return render(request, 'avaliacao.html')
+
+
+
+def avaliar(request, id_consulta=81):
+    
+    if request.method == 'GET':
+        consulta = Consulta.objects.get(id=id_consulta)
+        consulta.status = 'V'
+        consulta.save()
+        
+        return redirect('/pacientes/minhas_consultas/')
+        

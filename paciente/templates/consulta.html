@@ -19,7 +19,7 @@
     <div class="container">
         {% if consulta.status == 'C' %}
         <div class="alert alert-danger" role="alert">
-            Consulta cancelada
+            Consulta Cancelada
         </div>
         {% elif consulta.status == 'F' %}
             <div class="alert alert-success" role="alert">
@@ -44,13 +44,13 @@
                 <br>
                 <div class="row">
                     <div class="col-md">
-                        <p><i class="color-dark bi bi-check-circle-fill"></i> Consulta agendada</p>
+                        <p><i class="color-dark bi bi-check-circle-fill"></i> Consulta Agendada</p>
                     </div>
                     <div class="col-md">
-                        <p><i class="{% if consulta.status == 'F' %}color-dark{% endif %} bi bi-check-circle-fill"></i> Consulta realizada</p>
+                        <p><i class="{% if consulta.status == 'F' or consulta.status == 'V' %}color-dark{% endif %} bi bi-check-circle-fill"></i> Consulta Realizada</p>
                     </div>
                     <div class="col-md">
-                        <p><i class="bi bi-check-circle-fill"></i> Consulta Avaliada</p>
+                        <p><i class="{% if consulta.status == 'V' %}color-dark{% endif %} bi bi-check-circle-fill"></i> Consulta Avaliada</p>
                     </div>
                 </div>
                 <hr>
@@ -66,6 +66,12 @@
                     <a href="{{consulta.link}}" class="btn btn-success btn-dark-color btn-lg" >Acessar consulta</a>
                 {% else %}
                     <a href="#" class="btn btn-success btn-dark-color btn-lg disabled" >Acessar consulta</a>
+                {% endif %}
+
+                {% if consulta.status == 'F' or consulta.status == 'C' %}
+                    <a href="{% url 'avaliacao' %}" class="btn btn-success btn-dark-color btn-lg" >Avaliar Consulta</a>
+                {% else %}
+                    <a href="#" class="btn btn-success btn-dark-color btn-lg disabled" >Avaliar Consulta</a>
                 {% endif %}
 
                 <hr>
