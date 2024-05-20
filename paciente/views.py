@@ -137,18 +137,20 @@ def consulta(request, id_consulta):
                        'is_medico': is_medico(request.user)})
         
         
-def avaliacao(request):
+def avaliacao(request, id_consulta):
+    if request.method == 'GET':
+        consulta = Consulta.objects.get(id=id_consulta)
+        #consulta.status = 'V'
+        #consulta.save()
+        
+        return render(request, 'avaliacao.html', {'consulta': consulta})
     
-    return render(request, 'avaliacao.html')
-
-
-
-def avaliar(request, id_consulta=81):
     
+def avaliar(request, id_consulta):
     if request.method == 'GET':
         consulta = Consulta.objects.get(id=id_consulta)
         consulta.status = 'V'
         consulta.save()
         
-        return redirect('/pacientes/minhas_consultas/')
-        
+        return render(request, 'avaliacao.html', {'consulta': consulta})    
+    

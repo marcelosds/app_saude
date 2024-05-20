@@ -13,13 +13,74 @@
 {% block 'body' %}
 
     {% include "partials/navbar.html" %}
-
-    <h2><span class="color-dark">Escolha a Nota da Consulta</span></h2>
+    <br>
+    <div class="container">
+      {% if consulta.status == 'V' %}    
+        <div class="alert alert-success" role="alert">
+            Consulta Avaliada
+        </div>    
+      {% endif %}   
     <br>
     <br>
-    
+    <h2><span class="color-dark">Dê uma nota ao atendimento</span></h2>
+      <form id="evaluation-form" method="post"> {% csrf_token %} 
+        <div>
+          <p>Como você avaliaria o atendimento recebido?</p>
+          <div class="rating">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+              <label class="form-check-label" for="inlineRadio1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+              <label class="form-check-label" for="inlineRadio2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+              <label class="form-check-label" for="inlineRadio3">3</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+              <label class="form-check-label" for="inlineRadio4">4</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+              <label class="form-check-label" for="inlineRadio5">5</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio6" value="option6">
+              <label class="form-check-label" for="inlineRadio6">6</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio7" value="option7">
+              <label class="form-check-label" for="inlineRadio7">7</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio8" value="option8">
+              <label class="form-check-label" for="inlineRadio8">8</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio9" value="option9">
+              <label class="form-check-label" for="inlineRadio9">9</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio10" value="option10">
+              <label class="form-check-label" for="inlineRadio10">10</label>
+            </div>           
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Comentários (Opcional)</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <br>
+        {% if consulta.status == 'V' %}
+          <a href="{% url 'avaliar' consulta.id %}" class="btn btn-success btn-dark-color btn-lg disabled" >Enviar Avaliação</a>
+        {% else %}
+          <a href="{% url 'avaliar' consulta.id %}" class="btn btn-success btn-dark-color btn-lg" >Enviar Avaliação</a>
+        {% endif %}
+        
+      </form>
     </div>
-    <br>
-    <a href="{% url 'avaliar' %}" class="btn btn-success btn-dark-color btn-lg" >Avaliar</a>
-    
 {% endblock 'body' %}   

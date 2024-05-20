@@ -7,7 +7,7 @@ urlpatterns = [
     path('agendar_horario/<int:id_data_aberta>/', views.agendar_horario, name="agendar_horario"),
     path('minhas_consultas/', views.minhas_consultas, name="minhas_consultas"),
     path('consulta/<int:id_consulta>/', views.consulta, name="consulta"),
-    path('avaliacao/', views.avaliacao, name="avaliacao"),
-    path('avaliar/', views.avaliar, name="avaliar")
+    path('avaliacao/<int:id_consulta>/', views.avaliacao, name="avaliacao"),
+    path('avaliar/<int:id_consulta>/', views.avaliar, name="avaliar")
     
 ]

@@ -18,13 +18,17 @@
     <br><br>
     <div class="container">
         {% if consulta.status == 'C' %}
-        <div class="alert alert-danger" role="alert">
-            Consulta Cancelada
-        </div>
+            <div class="alert alert-danger" role="alert">
+                Consulta Cancelada
+            </div>
         {% elif consulta.status == 'F' %}
             <div class="alert alert-success" role="alert">
                 Consulta Finalizada
             </div>
+        {% elif consulta.status == 'V' %}    
+            <div class="alert alert-success" role="alert">
+                Consulta Avaliada
+            </div>    
         {% elif consulta.status == 'I' %}
             <div class="alert alert-primary" role="alert">
                 Consulta inicializada, acesse o link imediatamente!
@@ -69,7 +73,7 @@
                 {% endif %}
 
                 {% if consulta.status == 'F' or consulta.status == 'C' %}
-                    <a href="{% url 'avaliacao' %}" class="btn btn-success btn-dark-color btn-lg" >Avaliar Consulta</a>
+                    <a href="{% url 'avaliacao' consulta.id %}" class="btn btn-success btn-dark-color btn-lg" >Avaliar Consulta</a>
                 {% else %}
                     <a href="#" class="btn btn-success btn-dark-color btn-lg disabled" >Avaliar Consulta</a>
                 {% endif %}
@@ -78,7 +82,6 @@
                 <h3 class="p-bold">Meus documentos</h3>
                 <br>
                 {% for documento in documentos %}
-
                     <a href="{{documento.documento.url}}" class="link documentos"><i class="bi bi-file-arrow-down"></i> {{documento.titulo}} - {{documento.consulta.data_aberta.data.year}}</a>
                     <br>
                     <br><br>     
